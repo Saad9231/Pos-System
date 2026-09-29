@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #8B5A2B;
+    --color-primary-dark: #73461E;
+    --color-accent: #0F766E;
+    --color-bg: #FAF7F2;
+    --color-surface: #FFFFFF;
+    --color-text: #1F1A14;
+    --color-muted: #6B6258;
+    --color-border: #E6DED2;
+  }
+
+  .dark {
+    --color-primary: #C58B4D;
+    --color-primary-dark: #9E7858;
+    --color-accent: #2DD4BF;
+    --color-bg: #14110D;
+    --color-surface: #1E1A15;
+    --color-text: #F3EDE4;
+    --color-muted: #A79B8C;
+    --color-border: #332C24;
+  }
+}
+
+/* Custom modern scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4C0AD;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #482B14;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8B5A2B;
+}
+
+/* Print styles for thermal and A4 invoices */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  #printable-invoice, #printable-invoice * {
+    visibility: visible;
+  }
+  
+  #printable-invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white !important;
+    color: black !important;
+  }
+
+  @page {
+    margin: 5mm;
+  }
+}
+
+/* Smooth transitions */
+.smooth-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tabular figures for aligned financial numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
