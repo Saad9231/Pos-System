@@ -121,6 +121,13 @@ export const DashboardView: React.FC = () => {
     .reduce((sum, i) => sum + i.items.reduce((iSum, item) => iSum + (item.costPrice * item.quantity), 0), 0);
   const monthlyProfit = monthlySales - monthlyCOGS - monthlyExpenses;
 
+  // Animated KPI numbers using useCountUp
+  const salesTodayAnimated = useCountUp(salesToday);
+  const labourCostTodayAnimated = useCountUp(labourCostToday);
+  const todayProfitAnimated = useCountUp(todayProfit || 68000);
+  const totalReceivablesAnimated = useCountUp(totalReceivables);
+  const monthlySalesAnimated = useCountUp(monthlySales);
+
   // Chart data: 7-day trend
   const revenueTrendData = [
     { day: '18 Sep', sales: 120000, expenses: 25000, profit: 45000 },
@@ -247,7 +254,7 @@ export const DashboardView: React.FC = () => {
               <DollarSign className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(useCountUp(salesToday))}
+              {formatPKR(salesTodayAnimated)}
             </div>
             <div className="text-[10px] text-emerald-600 flex items-center gap-1 mt-1 font-semibold">
               <TrendingUp className="w-3 h-3" />
@@ -289,7 +296,7 @@ export const DashboardView: React.FC = () => {
               <Users className="w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(useCountUp(labourCostToday))}
+              {formatPKR(labourCostTodayAnimated)}
             </div>
             <div className="text-[10px] text-stone-400 mt-1">Active workshop wages</div>
           </motion.div>
@@ -304,7 +311,7 @@ export const DashboardView: React.FC = () => {
               <TrendingUp className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-emerald-700 dark:text-emerald-300 mt-1.5 tabular-nums">
-              {formatPKR(useCountUp(todayProfit || 68000))}
+              {formatPKR(todayProfitAnimated)}
             </div>
             <div className="text-[10px] text-emerald-600 font-medium mt-1">Margin ~ 41%</div>
           </motion.div>
@@ -332,7 +339,7 @@ export const DashboardView: React.FC = () => {
               <Clock className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
             </div>
             <div className="text-lg font-black text-amber-700 dark:text-amber-400 mt-1.5 tabular-nums">
-              {formatPKR(useCountUp(totalReceivables))}
+              {formatPKR(totalReceivablesAnimated)}
             </div>
             <div className="text-[10px] text-amber-600 font-medium mt-1 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
               <span>View overdue</span>
@@ -440,7 +447,7 @@ export const DashboardView: React.FC = () => {
               <TrendingUp className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(useCountUp(monthlySales))}
+              {formatPKR(monthlySalesAnimated)}
             </div>
             <div className="text-[10px] text-stone-400 mt-1">September 2026 MTD</div>
           </motion.div>
@@ -456,7 +463,7 @@ export const DashboardView: React.FC = () => {
             </div>
             <div className="text-[10px] text-emerald-600 font-medium mt-1">After all COGS & exp</div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Interactive Charts Section */}
