@@ -1,4 +1,6 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { useCountUp } from '../../hooks/useCountUp';
 import { useStore } from '../../context/StoreContext';
 import { formatPKR, formatDate } from '../../utils/formatters';
 import { getTranslation } from '../../i18n/translations';
@@ -229,21 +231,29 @@ export const DashboardView: React.FC = () => {
           <span className="text-[11px] text-stone-400 font-medium">Live PKT Sync</span>
         </div>
 
-        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-3 lg:gap-4">
+        <motion.div 
+          className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-3 lg:gap-4"
+          variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
+          initial="hidden"
+          animate="visible"
+        >
           {/* 1. Sales Today */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300"
+          >
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.salesToday', language)}</span>
               <DollarSign className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(salesToday)}
+              {formatPKR(useCountUp(salesToday))}
             </div>
             <div className="text-[10px] text-emerald-600 flex items-center gap-1 mt-1 font-semibold">
               <TrendingUp className="w-3 h-3" />
               +14% vs yesterday
             </div>
-          </div>
+          </motion.div>
 
           {/* 2. Purchases Today */}
           <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-amber-500/10 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300">
@@ -270,28 +280,34 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 4. Labour Cost Today */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-blue-500/10 hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-blue-500/10 hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300"
+          >
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.labourCostToday', language)}</span>
               <Users className="w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(labourCostToday)}
+              {formatPKR(useCountUp(labourCostToday))}
             </div>
             <div className="text-[10px] text-stone-400 mt-1">Active workshop wages</div>
-          </div>
+          </motion.div>
 
           {/* 5. Today's Profit */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/20 dark:bg-emerald-950/10 shadow-subtle hover:shadow-lg hover:shadow-emerald-500/20 hover:border-emerald-400 hover:-translate-y-1 transition-all duration-300">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/20 dark:bg-emerald-950/10 shadow-subtle hover:shadow-lg hover:shadow-emerald-500/20 hover:border-emerald-400 hover:-translate-y-1 transition-all duration-300"
+          >
             <div className="flex items-center justify-between text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
               <span>{getTranslation('kpi.todayProfit', language)}</span>
               <TrendingUp className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-emerald-700 dark:text-emerald-300 mt-1.5 tabular-nums">
-              {formatPKR(todayProfit || 68000)}
+              {formatPKR(useCountUp(todayProfit || 68000))}
             </div>
             <div className="text-[10px] text-emerald-600 font-medium mt-1">Margin ~ 41%</div>
-          </div>
+          </motion.div>
 
           {/* 6. Cash & Bank in Hand */}
           <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300">
@@ -306,19 +322,23 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 7. Receivables (Customer Credit) */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-amber-500/10 hover:border-amber-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('pendingPayments')}>
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-amber-500/10 hover:border-amber-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            onClick={() => setActiveTab('pendingPayments')}
+          >
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.receivables', language)}</span>
               <Clock className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
             </div>
             <div className="text-lg font-black text-amber-700 dark:text-amber-400 mt-1.5 tabular-nums">
-              {formatPKR(totalReceivables)}
+              {formatPKR(useCountUp(totalReceivables))}
             </div>
             <div className="text-[10px] text-amber-600 font-medium mt-1 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
               <span>View overdue</span>
               <ChevronRight className="w-3 h-3" />
             </div>
-          </div>
+          </motion.div>
 
           {/* 8. Payables (Vendor balances) */}
           <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-rose-500/10 hover:border-rose-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('suppliers')}>
@@ -347,7 +367,11 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 10. Low Stock Alerts */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/20 dark:bg-amber-950/10 shadow-subtle hover:shadow-lg hover:shadow-amber-500/20 hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('catalog')}>
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/20 dark:bg-amber-950/10 shadow-subtle hover:shadow-lg hover:shadow-amber-500/20 hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            onClick={() => setActiveTab('catalog')}
+          >
             <div className="flex items-center justify-between text-amber-800 dark:text-amber-300 text-xs font-semibold">
               <span>{getTranslation('kpi.lowStockCount', language)}</span>
               <AlertTriangle className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:scale-125 group-hover:text-amber-500 animate-pulse" />
@@ -356,10 +380,14 @@ export const DashboardView: React.FC = () => {
               {lowStockCount} Items
             </div>
             <div className="text-[10px] text-amber-600 font-medium mt-1">Requires re-order</div>
-          </div>
+          </motion.div>
 
           {/* 11. Out of Stock */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/20 dark:bg-rose-950/10 shadow-subtle hover:shadow-lg hover:shadow-rose-500/20 hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('catalog')}>
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/20 dark:bg-rose-950/10 shadow-subtle hover:shadow-lg hover:shadow-rose-500/20 hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            onClick={() => setActiveTab('catalog')}
+          >
             <div className="flex items-center justify-between text-rose-800 dark:text-rose-300 text-xs font-semibold">
               <span>Out of Stock</span>
               <PackageX className="w-4 h-4 text-rose-600 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12" />
@@ -368,10 +396,14 @@ export const DashboardView: React.FC = () => {
               {outOfStockCount} Items
             </div>
             <div className="text-[10px] text-rose-600 font-medium mt-1">4-Door Wardrobe</div>
-          </div>
+          </motion.div>
 
           {/* 12. Active Custom Orders */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-teal-200 dark:border-teal-900/50 bg-teal-50/20 dark:bg-teal-950/10 shadow-subtle hover:shadow-lg hover:shadow-teal-500/20 hover:border-teal-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('customOrders')}>
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-teal-200 dark:border-teal-900/50 bg-teal-50/20 dark:bg-teal-950/10 shadow-subtle hover:shadow-lg hover:shadow-teal-500/20 hover:border-teal-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            onClick={() => setActiveTab('customOrders')}
+          >
             <div className="flex items-center justify-between text-teal-800 dark:text-teal-300 text-xs font-semibold">
               <span>{getTranslation('kpi.pendingOrders', language)}</span>
               <Hammer className="w-4 h-4 text-teal-600 transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110" />
@@ -380,10 +412,14 @@ export const DashboardView: React.FC = () => {
               {pendingOrdersCount} In Workshop
             </div>
             <div className="text-[10px] text-teal-600 font-medium mt-1">Stages in progress</div>
-          </div>
+          </motion.div>
 
           {/* 13. Ready for Delivery */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/20 dark:bg-blue-950/10 shadow-subtle hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('delivery')}>
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/20 dark:bg-blue-950/10 shadow-subtle hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            onClick={() => setActiveTab('delivery')}
+          >
             <div className="flex items-center justify-between text-blue-800 dark:text-blue-300 text-xs font-semibold">
               <span>{getTranslation('kpi.readyDelivery', language)}</span>
               <Truck className="w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-110" />
@@ -392,19 +428,22 @@ export const DashboardView: React.FC = () => {
               {readyForDeliveryCount} Orders
             </div>
             <div className="text-[10px] text-blue-600 font-medium mt-1">Dispatch scheduled</div>
-          </div>
+          </motion.div>
 
           {/* 14. Monthly Sales */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-emerald-500/10 hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-emerald-500/10 hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300"
+          >
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.monthlySales', language)}</span>
               <TrendingUp className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(monthlySales)}
+              {formatPKR(useCountUp(monthlySales))}
             </div>
             <div className="text-[10px] text-stone-400 mt-1">September 2026 MTD</div>
-          </div>
+          </motion.div>
 
           {/* 15. Monthly Net Profit */}
           <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300">
