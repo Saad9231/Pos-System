@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { getTranslation } from '../../i18n/translations';
-import { UserRole } from '../../types';
 import { 
   Search, 
   Sun, 
@@ -16,7 +15,9 @@ import {
   AlertTriangle,
   Clock,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  ChevronRight,
+  Command
 } from 'lucide-react';
 import { formatDateTime } from '../../utils/formatters';
 
@@ -27,7 +28,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   const { 
     currentUser, 
-    switchRole, 
+    logout,
     language, 
     setLanguage, 
     isDarkMode, 
@@ -35,6 +36,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
     notifications,
     markNotificationRead,
     clearAllNotifications,
+    activeTab,
     setActiveTab,
     settings,
     resetToDemoData
@@ -46,14 +48,37 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  const roleOptions: { role: UserRole; label: string; badge: string }[] = [
-    { role: 'owner', label: 'Owner / Super Admin', badge: 'Full Access' },
-    { role: 'manager', label: 'Store Manager', badge: 'Operations' },
-    { role: 'accountant', label: 'Chief Accountant', badge: 'Finance' },
-    { role: 'cashier', label: 'Sales / Cashier', badge: 'POS Counter' },
-    { role: 'production_manager', label: 'Production Lead', badge: 'Workshop' },
-    { role: 'store_keeper', label: 'Store Keeper', badge: 'Stock & Raw' }
-  ];
+  const pageBreadcrumbs: Record<string, { category: string; title: string }> = {
+    dashboard: { category: 'Main', title: 'Dashboard Overview' },
+    catalog: { category: 'Inventory', title: 'Products Catalog' },
+    categories: { category: 'Inventory', title: 'Product Categories' },
+    rawMaterials: { category: 'Inventory', title: 'Raw Materials' },
+    barcode: { category: 'Inventory', title: 'Barcode Management' },
+    stockAdjustments: { category: 'Inventory', title: 'Stock Adjustments' },
+    pos: { category: 'Sales', title: 'POS Billing Counter' },
+    invoices: { category: 'Sales', title: 'Invoices & Receivables' },
+    salesReturns: { category: 'Sales', title: 'Sales Returns' },
+    customOrders: { category: 'Production', title: 'Custom Orders Workshop' },
+    delivery: { category: 'Production', title: 'Delivery Tracking' },
+    purchases: { category: 'Procurement', title: 'Purchases & Bills' },
+    suppliers: { category: 'Procurement', title: 'Suppliers Directory' },
+    customers: { category: 'Customers', title: 'Customer Directory' },
+    pendingPayments: { category: 'Customers', title: 'Pending Payments' },
+    employees: { category: 'Labour', title: 'Staff & Labour' },
+    attendance: { category: 'Labour', title: 'Daily Attendance' },
+    salaries: { category: 'Labour', title: 'Payroll & Advances' },
+    expenses: { category: 'Finance', title: 'Expense Tracking' },
+    cashBook: { category: 'Finance', title: 'Cash & Bank Accounts' },
+    profitLoss: { category: 'Finance', title: 'Profit & Loss Statement' },
+    reports: { category: 'System', title: 'Reports & Analytics' },
+    auditLogs: { category: 'System', title: 'Audit Trail' },
+    notifications: { category: 'System', title: 'Activity Notifications' },
+    settings: { category: 'System', title: 'Store Settings' },
+    privacy: { category: 'Legal', title: 'Privacy Policy' },
+    faqs: { category: 'Help', title: 'FAQs & Guide' },
+  };
+
+  const currentBreadcrumb = pageBreadcrumbs[activeTab] || { category: 'Workspace', title: 'Dashboard' };
 
   const handleGlobalSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,70 +87,73 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 dark:bg-[#1E1A15]/95 backdrop-blur border-b border-[#E6DED2] dark:border-[#332C24] px-4 lg:px-6 py-3 transition-colors duration-200">
-      <div className="flex items-center justify-between gap-4">
-        {/* Left: Mobile Toggle & Brand */}
-        <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-30 lg:ml-64 bg-white/95 dark:bg-[#1E1A15]/95 backdrop-blur-md border-b border-[#E6DED2] dark:border-[#332C24] px-3 sm:px-6 py-2.5 sm:py-3 transition-all duration-200">
+      <div className="flex items-center justify-between gap-3 min-w-0">
+        
+        {/* Left: Desktop Active Breadcrumb OR Mobile Brand Toggle */}
+        <div className="flex items-center gap-2.5 min-w-0 shrink">
+          {/* Mobile Menu Hamburger */}
           <button
             onClick={onToggleSidebar}
-            className="p-2 rounded-lg text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 lg:hidden"
+            className="p-2 rounded-xl text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 lg:hidden border border-stone-200 dark:border-stone-800 flex items-center gap-1.5 shadow-sm active:scale-95 transition-all shrink-0"
             aria-label="Toggle Sidebar"
+            title="Open Menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4 text-[#8B5A2B] dark:text-[#C58B4D]" />
+            <span className="text-xs font-semibold text-stone-700 dark:text-stone-200">Menu</span>
           </button>
           
-          <div className="hidden sm:flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8B5A2B] to-[#5C3618] flex items-center justify-center text-white font-bold shadow-subtle">
+          {/* Mobile Brand Title */}
+          <div 
+            className="flex items-center gap-2 cursor-pointer lg:hidden min-w-0" 
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#8B5A2B] to-[#5C3618] flex items-center justify-center text-white font-bold text-xs shadow-sm shrink-0">
               SF
             </div>
-            <div>
-              <span className="font-bold text-stone-900 dark:text-stone-100 text-lg tracking-tight">
-                {settings.storeName}
-              </span>
-              <span className="hidden xl:inline-block ml-2 text-xs px-2 py-0.5 rounded-full bg-[#8B5A2B]/10 text-[#8B5A2B] dark:bg-[#C58B4D]/20 dark:text-[#C58B4D] font-medium">
-                v1.0 ERP
-              </span>
-            </div>
+            <span className="font-bold text-stone-900 dark:text-stone-100 text-sm truncate">
+              {settings.storeName}
+            </span>
+          </div>
+
+          {/* Desktop Executive Breadcrumb Navigation (Replaces duplicate store name) */}
+          <div className="hidden lg:flex items-center gap-2 min-w-0">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#8B5A2B] dark:text-[#C58B4D] bg-[#8B5A2B]/10 dark:bg-[#C58B4D]/20 px-2.5 py-1 rounded-md">
+              {currentBreadcrumb.category}
+            </span>
+            <ChevronRight className="w-3.5 h-3.5 text-stone-400 shrink-0" />
+            <h2 className="text-sm font-bold text-stone-900 dark:text-stone-100 tracking-tight truncate">
+              {currentBreadcrumb.title}
+            </h2>
           </div>
         </div>
 
-        {/* Center: Global Search */}
+        {/* Center: Global Search Bar */}
         <form onSubmit={handleGlobalSearch} className="flex-1 max-w-md hidden md:block">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
             <input
               type="text"
-              placeholder={getTranslation('action.search', language) + ' (e.g. Sofa, Bed, CUST-001, INV-2026)'}
+              placeholder={`${getTranslation('action.search', language)} (e.g. Sofa, Bed, CUST-001, INV-2026)`}
               value={globalSearch}
               onChange={(e) => setGlobalSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-1.5 text-sm rounded-lg bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#8B5A2B]/50 transition-all"
+              className="w-full pl-9 pr-12 py-1.5 text-xs sm:text-sm rounded-xl bg-stone-100/80 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#8B5A2B]/50 transition-all"
             />
+            <div className="absolute right-2.5 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-0.5 text-[10px] font-mono text-stone-400 bg-white dark:bg-stone-800 px-1.5 py-0.5 rounded border border-stone-200 dark:border-stone-700">
+              <Command className="w-2.5 h-2.5" />
+              <span>K</span>
+            </div>
           </div>
         </form>
 
-        {/* Right: Actions (Role switcher, Language, Dark mode, Notifications, Profile) */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Role Switcher */}
-          <div className="relative">
-            <select
-              value={currentUser.role}
-              onChange={(e) => switchRole(e.target.value as UserRole)}
-              className="text-xs font-semibold py-1.5 pl-2.5 pr-7 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border border-amber-200 dark:border-amber-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500/40 appearance-none transition-colors"
-              title="Switch Active Profile / RBAC Role"
-            >
-              {roleOptions.map(opt => (
-                <option key={opt.role} value={opt.role}>
-                  {opt.label} ({opt.badge})
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-amber-700 dark:text-amber-300 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
+        {/* Right: Actions & User Controls */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
 
           {/* Language Switcher */}
           <button
+            type="button"
             onClick={() => setLanguage(language === 'en' ? 'ur' : 'en')}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors border border-stone-200 dark:border-stone-700/60"
             title="Switch Language (English / اردو)"
           >
             <Globe className="w-3.5 h-3.5 text-[#8B5A2B] dark:text-[#C58B4D]" />
@@ -134,8 +162,9 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
 
           {/* Dark Mode Toggle */}
           <button
+            type="button"
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2 rounded-lg text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+            className="p-2 rounded-xl text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors border border-stone-200 dark:border-stone-700/60"
             aria-label="Toggle Theme"
             title="Toggle Light / Dark Mode"
           >
@@ -145,8 +174,9 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           {/* Notifications Center */}
           <div className="relative">
             <button
+              type="button"
               onClick={() => setShowNotifs(!showNotifs)}
-              className="relative p-2 rounded-lg text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+              className="relative p-2 rounded-xl text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors border border-stone-200 dark:border-stone-700/60"
               aria-label="Notifications"
             >
               <Bell className="w-4 h-4" />
@@ -157,9 +187,9 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
               )}
             </button>
 
-            {/* Notifications Dropdown Popover */}
+            {/* Notifications Popover */}
             {showNotifs && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-[#1E1A15] rounded-xl shadow-modal border border-stone-200 dark:border-stone-800 py-3 z-50 animate-in fade-in zoom-in-95">
+              <div className="absolute right-0 mt-2 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-white dark:bg-[#1E1A15] rounded-2xl shadow-modal border border-stone-200 dark:border-stone-800 py-3 z-50 animate-in fade-in zoom-in-95">
                 <div className="flex items-center justify-between px-4 pb-2 border-b border-stone-100 dark:border-stone-800">
                   <div className="flex items-center gap-2">
                     <Bell className="w-4 h-4 text-[#8B5A2B] dark:text-[#C58B4D]" />
@@ -231,27 +261,30 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
             )}
           </div>
 
-          {/* User Profile Button & Menu */}
+          {/* Executive User Profile Button */}
           <div className="relative">
             <button
+              type="button"
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+              className="flex items-center gap-2 p-1 sm:p-1.5 rounded-xl border border-stone-200 dark:border-stone-700/60 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
             >
-              <div className="w-7 h-7 rounded-full bg-[#8B5A2B]/20 text-[#8B5A2B] dark:bg-[#C58B4D]/30 dark:text-[#C58B4D] flex items-center justify-center font-bold text-xs">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#8B5A2B] to-[#5C3618] text-white flex items-center justify-center font-bold text-xs shadow-sm">
                 {currentUser.name.charAt(0)}
               </div>
-              <div className="hidden lg:block text-left text-xs">
-                <div className="font-semibold text-stone-900 dark:text-stone-100 truncate max-w-[120px]">
+              <div className="hidden md:block text-left text-xs">
+                <div className="font-bold text-stone-900 dark:text-stone-100 truncate max-w-[110px]">
                   {currentUser.name.split(' ')[0]}
                 </div>
                 <div className="text-[10px] text-stone-500 capitalize">{currentUser.role.replace('_', ' ')}</div>
               </div>
+              <ChevronDown className="w-3.5 h-3.5 text-stone-400 hidden md:block" />
             </button>
 
+            {/* Profile Menu Dropdown */}
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#1E1A15] rounded-xl shadow-modal border border-stone-200 dark:border-stone-800 py-2 z-50 animate-in fade-in zoom-in-95">
+              <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#1E1A15] rounded-2xl shadow-modal border border-stone-200 dark:border-stone-800 py-2 z-50 animate-in fade-in zoom-in-95">
                 <div className="px-4 py-2 border-b border-stone-100 dark:border-stone-800">
-                  <p className="text-xs font-semibold text-stone-900 dark:text-stone-100">{currentUser.name}</p>
+                  <p className="text-xs font-bold text-stone-900 dark:text-stone-100">{currentUser.name}</p>
                   <p className="text-[10px] text-stone-500">{currentUser.email}</p>
                 </div>
                 <button
@@ -281,9 +314,20 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
                   <RefreshCw className="w-3.5 h-3.5" />
                   Reset Demo Data
                 </button>
+                <button
+                  onClick={() => {
+                    logout();
+                    setShowUserMenu(false);
+                  }}
+                  className="w-full text-left px-4 py-2 text-xs text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 flex items-center gap-2 font-medium"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  Sign Out to Login Page
+                </button>
               </div>
             )}
           </div>
+
         </div>
       </div>
     </header>

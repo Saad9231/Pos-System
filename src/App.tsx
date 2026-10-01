@@ -28,9 +28,15 @@ import { PrivacyPolicyView } from './components/public/PrivacyPolicyView';
 import { FAQsView } from './components/public/FAQsView';
 import { NotFoundView } from './components/public/NotFoundView';
 
+import { LoginView } from './components/auth/LoginView';
+
 const MainAppContent: React.FC = () => {
-  const { activeTab, setActiveTab, language } = useStore();
+  const { activeTab, setActiveTab, isAuthenticated, language } = useStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  if (!isAuthenticated || activeTab === 'login') {
+    return <LoginView onSuccess={() => setActiveTab('dashboard')} />;
+  }
 
   const renderActiveView = () => {
     switch (activeTab) {
@@ -91,7 +97,10 @@ const MainAppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] dark:bg-[#14110D] text-[#1F1A14] dark:text-[#F3EDE4] flex flex-col font-sans">
+    <div className="animated-furniture-bg min-h-screen text-[#1F1A14] dark:text-[#F3EDE4] flex flex-col font-sans relative overflow-x-hidden">
+      <div className="ambient-glow-1 pointer-events-none" />
+      <div className="ambient-glow-2 pointer-events-none" />
+
       <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
       
       <div className="flex flex-1">
@@ -107,18 +116,18 @@ const MainAppContent: React.FC = () => {
 
       {/* Footer */}
       <footer className="lg:ml-64 border-t border-[#E6DED2] dark:border-[#332C24] bg-white/60 dark:bg-[#1E1A15]/60 py-4 px-6 text-xs text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="flex items-center gap-4">
-          <span>© 2026 StoreFlow Furniture Management ERP</span>
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-4">
+          <span>© 2026 StoreFlow Furniture Management ERP. All rights reserved.</span>
           <span className="hidden sm:inline">·</span>
           <button onClick={() => setActiveTab('privacy')} className="hover:text-[#8B5A2B] hover:underline">
             Privacy Policy
           </button>
-          <span>·</span>
+          <span className="hidden sm:inline">·</span>
           <button onClick={() => setActiveTab('faqs')} className="hover:text-[#8B5A2B] hover:underline">
             FAQs & Guide
           </button>
         </div>
-        <div className="flex items-center gap-2 font-mono text-[11px] text-stone-400">
+        <div className="flex items-center gap-2 font-mono text-[11px] text-stone-400 mt-2 sm:mt-0">
           <span>Currency: PKR (Rs.)</span>
           <span>·</span>
           <span>Asia/Karachi UTC+5</span>

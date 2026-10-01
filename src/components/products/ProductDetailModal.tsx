@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Product } from '../../types';
 import { useStore } from '../../context/StoreContext';
 import { formatPKR, formatDate, formatDateTime } from '../../utils/formatters';
@@ -63,8 +64,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const profitPercent = product.purchaseCost > 0 ? Math.round((profitMargin / product.salePrice) * 100) : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-white dark:bg-[#1E1A15] rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-modal border border-stone-200 dark:border-stone-800 flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="absolute inset-0 bg-stone-900/60 backdrop-blur-sm"
+      />
+      <motion.div 
+        layoutId={`product-card-${product.id}`}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="bg-white dark:bg-[#1E1A15] rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto overflow-x-hidden shadow-modal border border-stone-200 dark:border-stone-800 flex flex-col relative z-10"
+      >
         {/* Modal Header */}
         <div className="flex items-center justify-between p-4 border-b border-stone-200 dark:border-stone-800 sticky top-0 bg-white/95 dark:bg-[#1E1A15]/95 backdrop-blur z-10">
           <div className="flex items-center gap-2">
@@ -86,7 +98,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           {/* Left Column: Image Gallery & Barcode */}
           <div className="space-y-4">
             <div className="aspect-[4/3] rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800">
-              <img 
+              <motion.img 
+                layoutId={`product-image-${product.id}`}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                 src={selectedImg || product.images[0]} 
                 alt={product.name} 
                 className="w-full h-full object-cover"
@@ -122,9 +136,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           {/* Right Column: Specifications & Financials */}
           <div className="space-y-4">
             <div>
-              <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-snug">
+              <motion.h2 
+                layoutId={`product-title-${product.id}`}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="text-xl font-black text-stone-900 dark:text-stone-100 leading-snug"
+              >
                 {product.name}
-              </h2>
+              </motion.h2>
               <p className="text-xs text-stone-500 mt-1 leading-relaxed">
                 {product.description || 'Premium hand-crafted furniture built from solid seasoned hardwoods.'}
               </p>
@@ -243,7 +261,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             Add to POS Counter
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

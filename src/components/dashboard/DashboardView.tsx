@@ -18,7 +18,8 @@ import {
   MessageSquare, 
   ExternalLink,
   ChevronRight,
-  Sparkles,
+  Armchair,
+  Sofa,
   ArrowUpRight,
   ShieldAlert
 } from 'lucide-react';
@@ -162,18 +163,24 @@ export const DashboardView: React.FC = () => {
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner: Welcome & Quick Action Bar */}
-      <div className="bg-gradient-to-r from-[#8B5A2B] via-[#73461E] to-[#482B14] rounded-2xl p-6 text-white shadow-card relative overflow-hidden">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-10 pointer-events-none flex items-center justify-end pr-8">
-          <Sparkles className="w-64 h-64 text-amber-200" />
+      <div className="animated-gradient-banner rounded-2xl p-4 sm:p-6 text-white shadow-card relative overflow-hidden">
+        {/* Realistic Furniture Picture Banner Overlay */}
+        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-1/2 lg:w-5/12 pointer-events-none overflow-hidden rounded-r-2xl">
+          <img 
+            src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80" 
+            alt="Luxury Furniture Studio" 
+            className="w-full h-full object-cover object-center opacity-25 mix-blend-overlay scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#3B220E] via-[#5C3618]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 text-xs font-semibold backdrop-blur text-amber-100 mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
+              <Armchair className="w-3.5 h-3.5 text-amber-300" />
               <span>StoreFlow Operational Dashboard</span>
             </div>
-            <h1 className="text-2xl lg:text-3xl font-black tracking-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight">
               Furniture Business Overview
             </h1>
             <p className="text-xs text-amber-100/90 mt-1 max-w-xl leading-relaxed">
@@ -182,30 +189,30 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full lg:w-auto">
             <button
               onClick={() => setActiveTab('pos')}
-              className="px-4 py-2.5 rounded-xl bg-white text-[#73461E] font-bold text-xs shadow-subtle hover:bg-amber-50 active:scale-95 transition-all flex items-center gap-1.5"
+              className="px-3.5 sm:px-4 py-2.5 rounded-xl bg-white text-[#73461E] font-bold text-xs shadow-subtle hover:bg-amber-50 active:scale-95 transition-all flex items-center justify-center gap-1.5"
             >
               <PlusCircle className="w-4 h-4 text-[#8B5A2B]" />
-              New POS Sale
+              <span>New POS Sale</span>
             </button>
             <button
               onClick={() => setActiveTab('customOrders')}
-              className="px-4 py-2.5 rounded-xl bg-tealAccent-600 text-white font-bold text-xs shadow-subtle hover:bg-tealAccent-700 active:scale-95 transition-all flex items-center gap-1.5"
+              className="px-3.5 sm:px-4 py-2.5 rounded-xl bg-teal-600 text-white font-bold text-xs shadow-subtle hover:bg-teal-700 active:scale-95 transition-all flex items-center justify-center gap-1.5"
             >
               <Hammer className="w-4 h-4" />
-              Custom Order Intake
+              <span>Custom Order</span>
             </button>
             <button
               onClick={() => setActiveTab('catalog')}
-              className="px-3.5 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-medium text-xs backdrop-blur transition-all"
+              className="px-3 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-medium text-xs backdrop-blur text-center transition-all"
             >
               Catalog
             </button>
             <button
               onClick={() => setActiveTab('reports')}
-              className="px-3.5 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-medium text-xs backdrop-blur transition-all"
+              className="px-3 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-medium text-xs backdrop-blur text-center transition-all"
             >
               Reports
             </button>
@@ -219,15 +226,15 @@ export const DashboardView: React.FC = () => {
           <h2 className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
             Key Performance Indicators (15 Metrics)
           </h2>
-          <span className="text-xs text-stone-400">Live PKT Sync</span>
+          <span className="text-[11px] text-stone-400 font-medium">Live PKT Sync</span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-3 lg:gap-4">
           {/* 1. Sales Today */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:border-[#8B5A2B]/40 transition-all">
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.salesToday', language)}</span>
-              <DollarSign className="w-4 h-4 text-emerald-600" />
+              <DollarSign className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
               {formatPKR(salesToday)}
@@ -239,10 +246,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 2. Purchases Today */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:border-[#8B5A2B]/40 transition-all">
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-amber-500/10 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.purchasesToday', language)}</span>
-              <ShoppingBag className="w-4 h-4 text-amber-600" />
+              <ShoppingBag className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
               {formatPKR(purchasesToday)}
@@ -251,10 +258,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 3. Expenses Today */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:border-[#8B5A2B]/40 transition-all">
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-rose-500/10 hover:border-rose-500/40 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.expensesToday', language)}</span>
-              <CreditCard className="w-4 h-4 text-rose-600" />
+              <CreditCard className="w-4 h-4 text-rose-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
               {formatPKR(expensesToday)}
@@ -263,10 +270,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 4. Labour Cost Today */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:border-[#8B5A2B]/40 transition-all">
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-blue-500/10 hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.labourCostToday', language)}</span>
-              <Users className="w-4 h-4 text-blue-600" />
+              <Users className="w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
               {formatPKR(labourCostToday)}
@@ -275,10 +282,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 5. Today's Profit */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/20 dark:bg-emerald-950/10 shadow-subtle">
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/20 dark:bg-emerald-950/10 shadow-subtle hover:shadow-lg hover:shadow-emerald-500/20 hover:border-emerald-400 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center justify-between text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
               <span>{getTranslation('kpi.todayProfit', language)}</span>
-              <TrendingUp className="w-4 h-4 text-emerald-600" />
+              <TrendingUp className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-emerald-700 dark:text-emerald-300 mt-1.5 tabular-nums">
               {formatPKR(todayProfit || 68000)}
@@ -287,10 +294,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 6. Cash & Bank in Hand */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:border-[#8B5A2B]/40 transition-all">
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.cashInHand', language)}</span>
-              <CreditCard className="w-4 h-4 text-[#8B5A2B]" />
+              <CreditCard className="w-4 h-4 text-[#8B5A2B] transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-[#8B5A2B] dark:text-[#C58B4D] mt-1.5 tabular-nums">
               {formatPKR(totalCashBank)}
@@ -299,25 +306,25 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 7. Receivables (Customer Credit) */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:border-amber-500 transition-all cursor-pointer" onClick={() => setActiveTab('pendingPayments')}>
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-amber-500/10 hover:border-amber-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('pendingPayments')}>
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.receivables', language)}</span>
-              <Clock className="w-4 h-4 text-amber-600" />
+              <Clock className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
             </div>
             <div className="text-lg font-black text-amber-700 dark:text-amber-400 mt-1.5 tabular-nums">
               {formatPKR(totalReceivables)}
             </div>
-            <div className="text-[10px] text-amber-600 font-medium mt-1 flex items-center gap-1">
+            <div className="text-[10px] text-amber-600 font-medium mt-1 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
               <span>View overdue</span>
               <ChevronRight className="w-3 h-3" />
             </div>
           </div>
 
           {/* 8. Payables (Vendor balances) */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:border-rose-500 transition-all cursor-pointer" onClick={() => setActiveTab('suppliers')}>
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-rose-500/10 hover:border-rose-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('suppliers')}>
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.payables', language)}</span>
-              <ShoppingBag className="w-4 h-4 text-rose-600" />
+              <ShoppingBag className="w-4 h-4 text-rose-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-rose-700 dark:text-rose-400 mt-1.5 tabular-nums">
               {formatPKR(totalPayables)}
@@ -326,24 +333,24 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 9. Total Stock Valuation */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:border-[#8B5A2B]/40 transition-all cursor-pointer" onClick={() => setActiveTab('catalog')}>
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-teal-500/10 hover:border-teal-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('catalog')}>
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.stockValue', language)}</span>
-              <ShoppingBag className="w-4 h-4 text-tealAccent-600" />
+              <ShoppingBag className="w-4 h-4 text-teal-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
               {formatPKR(totalStockValue)}
             </div>
-            <div className="text-[10px] text-tealAccent-700 dark:text-tealAccent-300 font-medium mt-1">
+            <div className="text-[10px] text-teal-700 dark:text-teal-400 font-medium mt-1 group-hover:translate-x-1 transition-transform">
               Finished & Raw Material
             </div>
           </div>
 
           {/* 10. Low Stock Alerts */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/20 dark:bg-amber-950/10 shadow-subtle cursor-pointer" onClick={() => setActiveTab('catalog')}>
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/20 dark:bg-amber-950/10 shadow-subtle hover:shadow-lg hover:shadow-amber-500/20 hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('catalog')}>
             <div className="flex items-center justify-between text-amber-800 dark:text-amber-300 text-xs font-semibold">
               <span>{getTranslation('kpi.lowStockCount', language)}</span>
-              <AlertTriangle className="w-4 h-4 text-amber-600" />
+              <AlertTriangle className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:scale-125 group-hover:text-amber-500 animate-pulse" />
             </div>
             <div className="text-lg font-black text-amber-700 dark:text-amber-400 mt-1.5 tabular-nums">
               {lowStockCount} Items
@@ -352,10 +359,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 11. Out of Stock */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/20 dark:bg-rose-950/10 shadow-subtle cursor-pointer" onClick={() => setActiveTab('catalog')}>
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/20 dark:bg-rose-950/10 shadow-subtle hover:shadow-lg hover:shadow-rose-500/20 hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('catalog')}>
             <div className="flex items-center justify-between text-rose-800 dark:text-rose-300 text-xs font-semibold">
               <span>Out of Stock</span>
-              <PackageX className="w-4 h-4 text-rose-600" />
+              <PackageX className="w-4 h-4 text-rose-600 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12" />
             </div>
             <div className="text-lg font-black text-rose-700 dark:text-rose-400 mt-1.5 tabular-nums">
               {outOfStockCount} Items
@@ -364,10 +371,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 12. Active Custom Orders */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-teal-200 dark:border-teal-900/50 bg-teal-50/20 dark:bg-teal-950/10 shadow-subtle cursor-pointer" onClick={() => setActiveTab('customOrders')}>
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-teal-200 dark:border-teal-900/50 bg-teal-50/20 dark:bg-teal-950/10 shadow-subtle hover:shadow-lg hover:shadow-teal-500/20 hover:border-teal-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('customOrders')}>
             <div className="flex items-center justify-between text-teal-800 dark:text-teal-300 text-xs font-semibold">
               <span>{getTranslation('kpi.pendingOrders', language)}</span>
-              <Hammer className="w-4 h-4 text-teal-600" />
+              <Hammer className="w-4 h-4 text-teal-600 transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110" />
             </div>
             <div className="text-lg font-black text-teal-700 dark:text-teal-400 mt-1.5 tabular-nums">
               {pendingOrdersCount} In Workshop
@@ -376,10 +383,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 13. Ready for Delivery */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/20 dark:bg-blue-950/10 shadow-subtle cursor-pointer" onClick={() => setActiveTab('delivery')}>
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/20 dark:bg-blue-950/10 shadow-subtle hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('delivery')}>
             <div className="flex items-center justify-between text-blue-800 dark:text-blue-300 text-xs font-semibold">
               <span>{getTranslation('kpi.readyDelivery', language)}</span>
-              <Truck className="w-4 h-4 text-blue-600" />
+              <Truck className="w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-110" />
             </div>
             <div className="text-lg font-black text-blue-700 dark:text-blue-400 mt-1.5 tabular-nums">
               {readyForDeliveryCount} Orders
@@ -388,10 +395,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 14. Monthly Sales */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle">
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-emerald-500/10 hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.monthlySales', language)}</span>
-              <TrendingUp className="w-4 h-4 text-emerald-600" />
+              <TrendingUp className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
               {formatPKR(monthlySales)}
@@ -400,10 +407,10 @@ export const DashboardView: React.FC = () => {
           </div>
 
           {/* 15. Monthly Net Profit */}
-          <div className="bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle">
+          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.monthlyProfit', language)}</span>
-              <Sparkles className="w-4 h-4 text-[#8B5A2B]" />
+              <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-emerald-700 dark:text-emerald-400 mt-1.5 tabular-nums">
               {formatPKR(monthlyProfit)}

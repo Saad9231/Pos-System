@@ -84,3 +84,171 @@
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
+
+/* Animated Furniture Theme Background & Shimmer Effects */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes ambientPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.15) translate(25px, -20px);
+  }
+}
+
+@keyframes floatOrbs {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(3deg);
+  }
+}
+
+/* Furniture Warm Walnut Animated Gradient Banners */
+.animated-gradient-banner {
+  background: linear-gradient(-45deg, #3B220E, #5C3618, #73461E, #8B5A2B, #A66E38, #5C3618);
+  background-size: 300% 300%;
+  animation: gradientShift 14s ease infinite;
+}
+
+.dark .animated-gradient-banner {
+  background: linear-gradient(-45deg, #1C120A, #38210E, #5C3618, #73461E, #8B5A2B, #2A170A);
+  background-size: 300% 300%;
+  animation: gradientShift 14s ease infinite;
+}
+
+/* Subtle Animated Ambient Wood Motif Body Background */
+.animated-furniture-bg {
+  position: relative;
+  background-color: #FAF7F2;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(139, 90, 43, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(197, 139, 77, 0.09) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(15, 118, 110, 0.06) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(139, 90, 43, 0.07) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+.dark .animated-furniture-bg {
+  background-color: #14110D;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(197, 139, 77, 0.14) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(139, 90, 43, 0.16) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(45, 212, 191, 0.07) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(115, 70, 30, 0.14) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Ambient Animated Glow Orbs overlay */
+.ambient-glow-1 {
+  position: fixed;
+  top: -10%;
+  left: -5%;
+  width: 40vw;
+  height: 40vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 90, 43, 0.12) 0%, rgba(139, 90, 43, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientPulse 14s ease-in-out infinite;
+}
+
+.ambient-glow-2 {
+  position: fixed;
+  bottom: -15%;
+  right: -5%;
+  width: 45vw;
+  height: 45vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(197, 139, 77, 0.1) 0%, rgba(197, 139, 77, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientPulse 18s ease-in-out infinite reverse;
+}
+
+.floating-accent {
+  animation: floatOrbs 6s ease-in-out infinite;
+}
+
+/* Custom 3D Card Elevation & Depth System */
+.card-3d {
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: 
+    0 2px 4px 0 rgba(0, 0, 0, 0.04),
+    0 10px 20px -5px rgba(60, 40, 20, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.card-3d:hover {
+  transform: translateY(-4px) scale(1.006);
+  box-shadow: 
+    0 22px 35px -8px rgba(139, 90, 43, 0.18),
+    0 12px 18px -6px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(139, 90, 43, 0.25);
+}
+
+.dark .card-3d {
+  box-shadow: 
+    0 2px 5px 0 rgba(0, 0, 0, 0.4),
+    0 12px 28px -6px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.dark .card-3d:hover {
+  transform: translateY(-4px) scale(1.006);
+  box-shadow: 
+    0 24px 40px -8px rgba(197, 139, 77, 0.22),
+    0 14px 22px -6px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(197, 139, 77, 0.35);
+}
+
+/* Subtle Interactive Lift for List Items & Action Tiles */
+.card-lift {
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+}
+
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 28px -6px rgba(139, 90, 43, 0.14), 0 8px 10px -4px rgba(0, 0, 0, 0.06);
+}
+
+.dark .card-lift {
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.dark .card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 30px -6px rgba(197, 139, 77, 0.18), 0 0 0 1px rgba(197, 139, 77, 0.25);
+}
+
+/* Multi-layered Elevated Shadow */
+.shadow-elevated {
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 0, 0, 0.12),
+    0 10px 20px -8px rgba(139, 90, 43, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.dark .shadow-elevated {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+    0 12px 24px -8px rgba(197, 139, 77, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+

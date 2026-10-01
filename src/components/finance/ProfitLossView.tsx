@@ -65,7 +65,7 @@ export const ProfitLossView: React.FC = () => {
       <div className="p-6 bg-gradient-to-r from-[#8B5A2B] via-[#73461E] to-[#482B14] rounded-2xl text-white shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-xs font-bold text-amber-100 mb-2">
-            <Sparkles className="w-3.5 h-3.5" /> Net Profit Performance
+            <TrendingUp className="w-3.5 h-3.5 text-emerald-400" /> Net Profit Performance
           </div>
           <div className="text-4xl font-black tabular-nums tracking-tight">
             {formatPKR(netProfit)}

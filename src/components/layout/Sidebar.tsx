@@ -153,14 +153,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       {isOpen && (
         <div 
           onClick={onClose}
-          className="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-40 lg:hidden animate-in fade-in"
+          className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-40 lg:hidden animate-in fade-in transition-opacity"
         />
       )}
 
       {/* Sidebar Drawer */}
       <aside className={`
-        fixed top-0 bottom-0 left-0 z-40 w-64 bg-white dark:bg-[#1A1612] border-r border-[#E6DED2] dark:border-[#332C24]
-        transform transition-transform duration-300 ease-in-out flex flex-col
+        fixed top-0 bottom-0 left-0 z-50 lg:z-40 w-72 sm:w-80 lg:w-64 bg-white dark:bg-[#1A1612] border-r border-[#E6DED2] dark:border-[#332C24]
+        transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl lg:shadow-none
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Brand Header */}
@@ -178,20 +178,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               </p>
             </div>
           </div>
+          
+          {/* Close Button for Mobile / Tablet */}
           <button 
             onClick={onClose} 
-            className="p-1 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 lg:hidden"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-stone-500 hover:text-stone-900 hover:bg-stone-100 dark:text-stone-400 dark:hover:text-stone-100 dark:hover:bg-stone-800/80 border border-stone-200 dark:border-stone-700/60 shadow-sm transition-all lg:hidden active:scale-95"
+            aria-label="Close sidebar menu"
+            title="Close Sidebar"
           >
-            <X className="w-5 h-5" />
+            <span className="text-xs font-semibold">Close</span>
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Navigation List */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-8">
           {sections.map((sec, secIdx) => (
-            <div key={secIdx} className="space-y-1">
-              <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">
+            <div key={secIdx} className="space-y-1.5">
+              <div className="px-3 text-[10px] font-bold uppercase tracking-widest text-stone-400/80 dark:text-stone-500 mb-2 flex items-center gap-3">
                 {sec.title}
+                <div className="h-px bg-stone-200/60 dark:bg-stone-800/60 flex-1"></div>
               </div>
               {sec.items.map(item => {
                 const Icon = item.icon;
@@ -208,20 +213,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                       if (window.innerWidth < 1024) onClose();
                     }}
                     className={`
-                      w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all group
+                      w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[13px] transition-all duration-300 group relative overflow-hidden
                       ${isActive 
-                        ? 'bg-gradient-to-r from-[#8B5A2B] to-[#73461E] text-white shadow-card font-semibold' 
-                        : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800/80 hover:text-stone-900 dark:hover:text-stone-100'
+                        ? 'bg-[#8B5A2B]/10 text-[#8B5A2B] dark:bg-[#C58B4D]/10 dark:text-[#C58B4D] font-semibold ring-1 ring-[#8B5A2B]/20 dark:ring-[#C58B4D]/20 shadow-sm' 
+                        : 'text-stone-600 dark:text-stone-400 hover:bg-stone-50 hover:text-[#8B5A2B] dark:hover:bg-stone-800/40 dark:hover:text-[#C58B4D] hover:translate-x-1 font-medium'
                       }
                     `}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <Icon className={`w-4 h-4 shrink-0 transition-transform group-hover:scale-110 ${isActive ? 'text-white' : 'text-stone-500 dark:text-stone-400'}`} />
+                    {isActive && (
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#8B5A2B] dark:bg-[#C58B4D] rounded-r-full"></div>
+                    )}
+                    <div className="flex items-center gap-3 min-w-0 z-10">
+                      <Icon className={`w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110 ${isActive ? 'text-[#8B5A2B] dark:text-[#C58B4D]' : 'text-stone-400 group-hover:text-[#8B5A2B] dark:text-stone-500 dark:group-hover:text-[#C58B4D]'}`} />
                       <span className="truncate text-left">{label}</span>
                     </div>
 
                     {item.badge && (
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${item.badgeColor || 'bg-stone-200 text-stone-800'}`}>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 z-10 transition-colors ${item.badgeColor || 'bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300 group-hover:bg-white dark:group-hover:bg-stone-700'}`}>
                         {item.badge}
                       </span>
                     )}
@@ -232,11 +240,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           ))}
         </nav>
 
-        {/* Footer info badge */}
-        <div className="p-3 border-t border-[#E6DED2] dark:border-[#332C24] bg-stone-50/50 dark:bg-stone-900/30 text-[11px] text-stone-500 flex items-center justify-between">
-          <span>PKR Currency (Rs.)</span>
-          <span className="font-mono text-[10px] text-stone-400">Asia/Karachi</span>
-        </div>
       </aside>
     </>
   );

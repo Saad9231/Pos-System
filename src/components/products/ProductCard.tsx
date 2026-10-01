@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Product } from '../../types';
 import { useStore } from '../../context/StoreContext';
 import { formatPKR, getStatusBadgeClass } from '../../utils/formatters';
@@ -45,8 +46,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const profitPercent = product.purchaseCost > 0 ? Math.round((profitMargin / product.salePrice) * 100) : 0;
 
   return (
-    <div 
-      className="group bg-white dark:bg-[#1E1A15] rounded-2xl border border-stone-200 dark:border-stone-800 overflow-hidden shadow-subtle hover:shadow-card hover:border-[#8B5A2B]/40 transition-all flex flex-col justify-between"
+    <motion.div 
+      layoutId={`product-card-${product.id}`}
+      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+      className="group bg-white dark:bg-[#1E1A15] rounded-2xl border border-stone-200 dark:border-stone-800 overflow-hidden shadow-subtle hover:shadow-card hover:border-[#8B5A2B]/40 transition-colors flex flex-col justify-between"
       onMouseEnter={() => {
         if (product.images.length > 1) setCurrentImgIdx(1);
       }}
@@ -57,7 +60,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div>
         {/* Card Image 4:3 Aspect Ratio */}
         <div className="relative aspect-[4/3] bg-stone-100 dark:bg-stone-900 overflow-hidden">
-          <img 
+          <motion.img 
+            layoutId={`product-image-${product.id}`}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             src={product.images[currentImgIdx] || product.images[0] || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80'} 
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
@@ -72,21 +77,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           {/* Quick actions overlay on image */}
-          <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
             <button
-              onClick={() => onQuickView(product)}
-              className="p-1.5 rounded-lg bg-white/90 dark:bg-stone-800/90 text-stone-700 dark:text-stone-200 hover:bg-[#8B5A2B] hover:text-white shadow-sm transition-colors"
+              onClick={(e) => { e.stopPropagation(); onQuickView(product); }}
+              className="p-2 sm:p-1.5 rounded-lg bg-white/95 dark:bg-stone-800/95 text-stone-700 dark:text-stone-200 hover:bg-[#8B5A2B] hover:text-white shadow-md transition-colors"
               title="Quick View"
             >
-              <Eye className="w-3.5 h-3.5" />
+              <Eye className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
             </button>
             {['owner', 'manager'].includes(currentUser.role) && (
               <button
-                onClick={() => onEdit(product)}
-                className="p-1.5 rounded-lg bg-white/90 dark:bg-stone-800/90 text-stone-700 dark:text-stone-200 hover:bg-[#8B5A2B] hover:text-white shadow-sm transition-colors"
+                onClick={(e) => { e.stopPropagation(); onEdit(product); }}
+                className="p-2 sm:p-1.5 rounded-lg bg-white/95 dark:bg-stone-800/95 text-stone-700 dark:text-stone-200 hover:bg-[#8B5A2B] hover:text-white shadow-md transition-colors"
                 title="Edit Product"
               >
-                <Edit3 className="w-3.5 h-3.5" />
+                <Edit3 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
               </button>
             )}
           </div>
@@ -103,12 +108,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           {/* Product Name */}
-          <h3 
+          <motion.h3 
+            layoutId={`product-title-${product.id}`}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={() => onQuickView(product)}
             className="font-bold text-stone-900 dark:text-stone-100 text-sm leading-snug line-clamp-2 hover:text-[#8B5A2B] dark:hover:text-[#C58B4D] cursor-pointer"
           >
             {product.name}
-          </h3>
+          </motion.h3>
 
           {/* Material & Color */}
           <div className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
@@ -166,6 +173,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <span>{isOutOfStock ? 'Out of Stock' : 'Add to POS Counter'}</span>
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };

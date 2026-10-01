@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { Employee, EmployeeRole, SalaryType, AttendanceRecord } from '../../types';
 import { formatPKR, formatDate } from '../../utils/formatters';
@@ -23,10 +23,17 @@ export const LabourView: React.FC = () => {
     advances, 
     issueEmployeeAdvance, 
     accounts, 
-    currentUser 
+    currentUser,
+    activeTab
   } = useStore();
 
   const [activeSubTab, setActiveSubTab] = useState<'employees' | 'attendance' | 'advances' | 'payroll'>('employees');
+
+  useEffect(() => {
+    if (activeTab === 'employees') setActiveSubTab('employees');
+    else if (activeTab === 'attendance') setActiveSubTab('attendance');
+    else if (activeTab === 'salaries') setActiveSubTab('payroll');
+  }, [activeTab]);
 
   // Add Employee Modal
   const [showAddEmpModal, setShowAddEmpModal] = useState(false);

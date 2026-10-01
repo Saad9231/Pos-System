@@ -367,8 +367,8 @@ export const POSCounterView: React.FC = () => {
         </div>
       </div>
 
-      {/* RIGHT 5 COLS: Sticky Cart & Checkout Panel */}
-      <div className="lg:col-span-5 bg-white dark:bg-[#1E1A15] rounded-2xl border border-stone-200 dark:border-stone-800 shadow-modal p-5 space-y-4 sticky top-20">
+      {/* RIGHT 5 COLS: Cart & Checkout Panel */}
+      <div className="lg:col-span-5 bg-white dark:bg-[#1E1A15] rounded-2xl border border-stone-200 dark:border-stone-800 shadow-modal p-4 sm:p-5 space-y-4 lg:sticky lg:top-20">
         {/* Customer Selector Bar */}
         <div className="flex items-center justify-between gap-2 pb-3 border-b border-stone-100 dark:border-stone-800">
           <div className="flex-1">
@@ -494,7 +494,7 @@ export const POSCounterView: React.FC = () => {
         <div className="space-y-3 pt-1 text-xs">
           <div>
             <label className="block font-semibold text-stone-700 dark:text-stone-300 mb-1">Payment Method</label>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
               {(['Cash', 'Bank Transfer', 'JazzCash', 'Easypaisa', 'Card', 'Credit'] as PaymentMethod[]).map(m => (
                 <button
                   key={m}
@@ -572,7 +572,7 @@ export const POSCounterView: React.FC = () => {
           onClick={handleCompleteSale}
           className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#8B5A2B] to-[#5C3618] hover:from-[#73461E] hover:to-[#482B14] disabled:opacity-40 text-white font-black text-sm shadow-card active:scale-98 transition-all flex items-center justify-center gap-2"
         >
-          <Sparkles className="w-4 h-4 text-amber-300" />
+          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>Complete POS Sale & Print Invoice</span>
         </button>
       </div>

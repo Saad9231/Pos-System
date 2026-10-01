@@ -48,6 +48,9 @@ import { Language } from '../i18n/translations';
 interface StoreContextType {
   // Auth & System
   currentUser: User;
+  isAuthenticated: boolean;
+  login: (email: string, password?: string, role?: UserRole) => boolean;
+  logout: () => void;
   switchRole: (role: UserRole) => void;
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -195,6 +198,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => loadState('authenticated', false));
   const [currentUser, setCurrentUser] = useState<User>({
     id: 'usr-1',
     name: 'Muhammad Salman Sheikh',
@@ -237,6 +241,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [language]);
 
   useEffect(() => {
+    localStorage.setItem(STORAGE_PREFIX + 'authenticated', JSON.stringify(isAuthenticated));
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     localStorage.setItem(STORAGE_PREFIX + 'dark_mode', JSON.stringify(isDarkMode));
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -261,6 +269,38 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => { localStorage.setItem(STORAGE_PREFIX + 'notifications', JSON.stringify(notifications)); }, [notifications]);
   useEffect(() => { localStorage.setItem(STORAGE_PREFIX + 'audit_logs', JSON.stringify(auditLogs)); }, [auditLogs]);
   useEffect(() => { localStorage.setItem(STORAGE_PREFIX + 'stock_movements', JSON.stringify(stockMovements)); }, [stockMovements]);
+
+  // Auth Operations
+  const login = (email: string, password?: string, role?: UserRole): boolean => {
+    const roleNames: Record<UserRole, string> = {
+      owner: 'Muhammad Salman Sheikh (Owner)',
+      manager: 'Hamza Tariq (Store Manager)',
+      accountant: 'Noman Siddiqui (Chief Accountant)',
+      cashier: 'Bilal Cashier (POS)',
+      production_manager: 'Ustad Aslam (Production Lead)',
+      store_keeper: 'Rashid Khan (Inventory Keeper)'
+    };
+    
+    const assignedRole = role || 'owner';
+    const userName = roleNames[assignedRole] || email.split('@')[0];
+
+    setCurrentUser({
+      id: 'usr-' + Date.now(),
+      name: userName,
+      email,
+      role: assignedRole,
+      phone: '+92 300 1234567'
+    });
+    setIsAuthenticated(true);
+    addAuditLog('LOGIN', 'Authentication', `User ${userName} (${email}) logged in successfully as ${assignedRole}`);
+    return true;
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setActiveTab('dashboard');
+    addAuditLog('LOGIN', 'Authentication', `User ${currentUser.name} logged out`);
+  };
 
   // Role Switcher
   const switchRole = (role: UserRole) => {
@@ -1317,6 +1357,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   return (
     <StoreContext.Provider value={{
       currentUser,
+      isAuthenticated,
+      login,
+      logout,
       switchRole,
       language,
       setLanguage,

@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { useStore } from '../../context/StoreContext';
 import { Product, ProductCategory } from '../../types';
 import { ProductCard } from './ProductCard';
@@ -37,7 +38,7 @@ const CATEGORIES: (ProductCategory | 'All')[] = [
 ];
 
 export const ProductsCatalogView: React.FC = () => {
-  const { products, currentUser, setActiveTab } = useStore();
+  const { products, currentUser, setActiveTab, activeTab } = useStore();
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,6 +54,15 @@ export const ProductsCatalogView: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
+
+  // Auto-open modals based on sidebar active tab
+  useEffect(() => {
+    if (activeTab === 'barcode') {
+      setShowBarcodeModal(true);
+    } else if (activeTab === 'stockAdjustments') {
+      setShowAdjustmentModal(true);
+    }
+  }, [activeTab]);
 
   // Filtering & Sorting logic
   const filteredProducts = useMemo(() => {
@@ -393,18 +403,20 @@ export const ProductsCatalogView: React.FC = () => {
       )}
 
       {/* Modals */}
-      {selectedProductForQuickView && (
-        <ProductDetailModal
-          product={selectedProductForQuickView}
-          onClose={() => setSelectedProductForQuickView(null)}
-          onEdit={(p) => {
-            setSelectedProductForQuickView(null);
-            setProductToEdit(p);
-            setShowAddModal(true);
-          }}
-          onAddToCart={handleAddToCart}
-        />
-      )}
+      <AnimatePresence>
+        {selectedProductForQuickView && (
+          <ProductDetailModal
+            product={selectedProductForQuickView}
+            onClose={() => setSelectedProductForQuickView(null)}
+            onEdit={(p) => {
+              setSelectedProductForQuickView(null);
+              setProductToEdit(p);
+              setShowAddModal(true);
+            }}
+            onAddToCart={handleAddToCart}
+          />
+        )}
+      </AnimatePresence>
 
       {showAddModal && (
         <ProductFormModal
@@ -417,11 +429,17 @@ export const ProductsCatalogView: React.FC = () => {
       )}
 
       {showBarcodeModal && (
-        <BarcodeModal onClose={() => setShowBarcodeModal(false)} />
+        <BarcodeModal onClose={() => {
+          setShowBarcodeModal(false);
+          if (activeTab === 'barcode') setActiveTab('catalog');
+        }} />
       )}
 
       {showAdjustmentModal && (
-        <StockAdjustmentModal onClose={() => setShowAdjustmentModal(false)} />
+        <StockAdjustmentModal onClose={() => {
+          setShowAdjustmentModal(false);
+          if (activeTab === 'stockAdjustments') setActiveTab('catalog');
+        }} />
       )}
     </div>
   );
