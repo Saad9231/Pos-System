@@ -306,8 +306,11 @@ export const ProductsCatalogView: React.FC = () => {
                     <td className="p-3.5">
                       <div className="flex items-center gap-3">
                         <img 
-                          src={prod.images[0]} 
+                          src={prod.images[0] || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80'} 
                           alt={prod.name} 
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80';
+                          }}
                           className="w-10 h-10 rounded-lg object-cover bg-stone-100 shrink-0" 
                         />
                         <div>

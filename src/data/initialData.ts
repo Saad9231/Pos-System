@@ -151,8 +151,8 @@ export const initialProducts: Product[] = [
     barcode: '89640001004',
     name: 'Nordic Minimalist Oak Accent Armchair',
     images: [
-      'https://images.unsplash.com/photo-1580481077195-c3a8a30f4e30?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80'
     ],
     category: 'Chairs',
     brand: 'Nordic Living',

@@ -332,8 +332,11 @@ export const POSCounterView: React.FC = () => {
                 <div className="space-y-2 w-full">
                   <div className="aspect-[4/3] rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 relative">
                     <img 
-                      src={prod.images[0]} 
+                      src={prod.images[0] || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80'} 
                       alt={prod.name} 
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80';
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
                     />
                     <div className="absolute top-1.5 right-1.5">

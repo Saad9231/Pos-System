@@ -4,6 +4,8 @@ import { useCountUp } from '../../hooks/useCountUp';
 import { useStore } from '../../context/StoreContext';
 import { formatPKR, formatDate } from '../../utils/formatters';
 import { getTranslation } from '../../i18n/translations';
+import { InteractiveGlassCard } from '../common/InteractiveGlassCard';
+import { AnimatedCounter } from '../common/AnimatedCounter';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -239,230 +241,198 @@ export const DashboardView: React.FC = () => {
         </div>
 
         <motion.div 
-          className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-3 lg:gap-4"
-          variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
+          className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-4"
+          variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
           initial="hidden"
           animate="visible"
         >
           {/* 1. Sales Today */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300"
-          >
+          <InteractiveGlassCard variant="dashboard" glowColor="emerald" className="p-4">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.salesToday', language)}</span>
               <DollarSign className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(salesTodayAnimated)}
+              <AnimatedCounter value={salesToday} isCurrency={true} />
             </div>
             <div className="text-[10px] text-emerald-600 flex items-center gap-1 mt-1 font-semibold">
               <TrendingUp className="w-3 h-3" />
               +14% vs yesterday
             </div>
-          </motion.div>
+          </InteractiveGlassCard>
 
           {/* 2. Purchases Today */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-amber-500/10 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300">
+          <InteractiveGlassCard variant="dashboard" glowColor="amber" className="p-4">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.purchasesToday', language)}</span>
               <ShoppingBag className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(purchasesToday)}
+              <AnimatedCounter value={purchasesToday} isCurrency={true} />
             </div>
             <div className="text-[10px] text-stone-400 mt-1">Raw wood & foam bills</div>
-          </div>
+          </InteractiveGlassCard>
 
           {/* 3. Expenses Today */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-rose-500/10 hover:border-rose-500/40 hover:-translate-y-1 transition-all duration-300">
+          <InteractiveGlassCard variant="dashboard" glowColor="rose" className="p-4">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.expensesToday', language)}</span>
               <CreditCard className="w-4 h-4 text-rose-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(expensesToday)}
+              <AnimatedCounter value={expensesToday} isCurrency={true} />
             </div>
             <div className="text-[10px] text-stone-400 mt-1">Fuel, tea & operations</div>
-          </div>
+          </InteractiveGlassCard>
 
           {/* 4. Labour Cost Today */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-blue-500/10 hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300"
-          >
+          <InteractiveGlassCard variant="dashboard" glowColor="blue" className="p-4">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.labourCostToday', language)}</span>
               <Users className="w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(labourCostTodayAnimated)}
+              <AnimatedCounter value={labourCostToday} isCurrency={true} />
             </div>
             <div className="text-[10px] text-stone-400 mt-1">Active workshop wages</div>
-          </motion.div>
+          </InteractiveGlassCard>
 
           {/* 5. Today's Profit */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/20 dark:bg-emerald-950/10 shadow-subtle hover:shadow-lg hover:shadow-emerald-500/20 hover:border-emerald-400 hover:-translate-y-1 transition-all duration-300"
-          >
+          <InteractiveGlassCard variant="dashboard" glowColor="emerald" className="p-4 bg-emerald-50/30 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/60">
             <div className="flex items-center justify-between text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
               <span>{getTranslation('kpi.todayProfit', language)}</span>
               <TrendingUp className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-emerald-700 dark:text-emerald-300 mt-1.5 tabular-nums">
-              {formatPKR(todayProfitAnimated)}
+              <AnimatedCounter value={todayProfit || 68000} isCurrency={true} />
             </div>
             <div className="text-[10px] text-emerald-600 font-medium mt-1">Margin ~ 41%</div>
-          </motion.div>
+          </InteractiveGlassCard>
 
           {/* 6. Cash & Bank in Hand */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300">
+          <InteractiveGlassCard variant="dashboard" glowColor="purple" className="p-4" onClick={() => setActiveTab('reports')}>
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.cashInHand', language)}</span>
-              <CreditCard className="w-4 h-4 text-[#8B5A2B] transition-transform duration-300 group-hover:scale-125" />
+              <CreditCard className="w-4 h-4 text-purple-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
-            <div className="text-lg font-black text-[#8B5A2B] dark:text-[#C58B4D] mt-1.5 tabular-nums">
-              {formatPKR(totalCashBank)}
+            <div className="text-lg font-black text-purple-700 dark:text-purple-400 mt-1.5 tabular-nums">
+              <AnimatedCounter value={totalCashBank} isCurrency={true} />
             </div>
             <div className="text-[10px] text-stone-400 mt-1">Meezan, HBL & Counter Cash</div>
-          </div>
+          </InteractiveGlassCard>
 
           {/* 7. Receivables (Customer Credit) */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-amber-500/10 hover:border-amber-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            onClick={() => setActiveTab('pendingPayments')}
-          >
+          <InteractiveGlassCard variant="dashboard" glowColor="amber" className="p-4" onClick={() => setActiveTab('pendingPayments')}>
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.receivables', language)}</span>
               <Clock className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
             </div>
             <div className="text-lg font-black text-amber-700 dark:text-amber-400 mt-1.5 tabular-nums">
-              {formatPKR(totalReceivablesAnimated)}
+              <AnimatedCounter value={totalReceivables} isCurrency={true} />
             </div>
             <div className="text-[10px] text-amber-600 font-medium mt-1 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
               <span>View overdue</span>
               <ChevronRight className="w-3 h-3" />
             </div>
-          </motion.div>
+          </InteractiveGlassCard>
 
           {/* 8. Payables (Vendor balances) */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-rose-500/10 hover:border-rose-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('suppliers')}>
+          <InteractiveGlassCard variant="dashboard" glowColor="rose" className="p-4" onClick={() => setActiveTab('suppliers')}>
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.payables', language)}</span>
               <ShoppingBag className="w-4 h-4 text-rose-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-rose-700 dark:text-rose-400 mt-1.5 tabular-nums">
-              {formatPKR(totalPayables)}
+              <AnimatedCounter value={totalPayables} isCurrency={true} />
             </div>
             <div className="text-[10px] text-stone-400 mt-1">4 Timber & Foam Vendors</div>
-          </div>
+          </InteractiveGlassCard>
 
           {/* 9. Total Stock Valuation */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-teal-500/10 hover:border-teal-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer" onClick={() => setActiveTab('catalog')}>
+          <InteractiveGlassCard variant="dashboard" glowColor="cyan" className="p-4" onClick={() => setActiveTab('catalog')}>
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.stockValue', language)}</span>
-              <ShoppingBag className="w-4 h-4 text-teal-600 transition-transform duration-300 group-hover:scale-125" />
+              <ShoppingBag className="w-4 h-4 text-cyan-600 transition-transform duration-300 group-hover:scale-125" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(totalStockValue)}
+              <AnimatedCounter value={totalStockValue} isCurrency={true} />
             </div>
-            <div className="text-[10px] text-teal-700 dark:text-teal-400 font-medium mt-1 group-hover:translate-x-1 transition-transform">
+            <div className="text-[10px] text-cyan-700 dark:text-cyan-400 font-medium mt-1 group-hover:translate-x-1 transition-transform">
               Finished & Raw Material
             </div>
-          </div>
+          </InteractiveGlassCard>
 
           {/* 10. Low Stock Alerts */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/20 dark:bg-amber-950/10 shadow-subtle hover:shadow-lg hover:shadow-amber-500/20 hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            onClick={() => setActiveTab('catalog')}
-          >
+          <InteractiveGlassCard variant="dashboard" glowColor="amber" className="p-4 bg-amber-50/20 dark:bg-amber-950/10 border-amber-200 dark:border-amber-900/40" onClick={() => setActiveTab('catalog')}>
             <div className="flex items-center justify-between text-amber-800 dark:text-amber-300 text-xs font-semibold">
               <span>{getTranslation('kpi.lowStockCount', language)}</span>
-              <AlertTriangle className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:scale-125 group-hover:text-amber-500 animate-pulse" />
+              <AlertTriangle className="w-4 h-4 text-amber-600 transition-transform duration-300 group-hover:scale-125 animate-pulse" />
             </div>
             <div className="text-lg font-black text-amber-700 dark:text-amber-400 mt-1.5 tabular-nums">
-              {lowStockCount} Items
+              <AnimatedCounter value={lowStockCount} suffix=" Items" />
             </div>
             <div className="text-[10px] text-amber-600 font-medium mt-1">Requires re-order</div>
-          </motion.div>
+          </InteractiveGlassCard>
 
           {/* 11. Out of Stock */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/20 dark:bg-rose-950/10 shadow-subtle hover:shadow-lg hover:shadow-rose-500/20 hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            onClick={() => setActiveTab('catalog')}
-          >
+          <InteractiveGlassCard variant="dashboard" glowColor="rose" className="p-4 bg-rose-50/20 dark:bg-rose-950/10 border-rose-200 dark:border-rose-900/40" onClick={() => setActiveTab('catalog')}>
             <div className="flex items-center justify-between text-rose-800 dark:text-rose-300 text-xs font-semibold">
               <span>Out of Stock</span>
               <PackageX className="w-4 h-4 text-rose-600 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12" />
             </div>
             <div className="text-lg font-black text-rose-700 dark:text-rose-400 mt-1.5 tabular-nums">
-              {outOfStockCount} Items
+              <AnimatedCounter value={outOfStockCount} suffix=" Items" />
             </div>
-            <div className="text-[10px] text-rose-600 font-medium mt-1">4-Door Wardrobe</div>
-          </motion.div>
+            <div className="text-[10px] text-rose-600 font-medium mt-1">Action required</div>
+          </InteractiveGlassCard>
 
           {/* 12. Active Custom Orders */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-teal-200 dark:border-teal-900/50 bg-teal-50/20 dark:bg-teal-950/10 shadow-subtle hover:shadow-lg hover:shadow-teal-500/20 hover:border-teal-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            onClick={() => setActiveTab('customOrders')}
-          >
-            <div className="flex items-center justify-between text-teal-800 dark:text-teal-300 text-xs font-semibold">
+          <InteractiveGlassCard variant="dashboard" glowColor="indigo" className="p-4" onClick={() => setActiveTab('customOrders')}>
+            <div className="flex items-center justify-between text-indigo-800 dark:text-indigo-300 text-xs font-semibold">
               <span>{getTranslation('kpi.pendingOrders', language)}</span>
-              <Hammer className="w-4 h-4 text-teal-600 transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110" />
+              <Hammer className="w-4 h-4 text-indigo-600 transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110" />
             </div>
-            <div className="text-lg font-black text-teal-700 dark:text-teal-400 mt-1.5 tabular-nums">
-              {pendingOrdersCount} In Workshop
+            <div className="text-lg font-black text-indigo-700 dark:text-indigo-400 mt-1.5 tabular-nums">
+              <AnimatedCounter value={pendingOrdersCount} suffix=" Workshop" />
             </div>
-            <div className="text-[10px] text-teal-600 font-medium mt-1">Stages in progress</div>
-          </motion.div>
+            <div className="text-[10px] text-indigo-600 font-medium mt-1">Stages in progress</div>
+          </InteractiveGlassCard>
 
           {/* 13. Ready for Delivery */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/20 dark:bg-blue-950/10 shadow-subtle hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-400 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            onClick={() => setActiveTab('delivery')}
-          >
+          <InteractiveGlassCard variant="dashboard" glowColor="blue" className="p-4" onClick={() => setActiveTab('delivery')}>
             <div className="flex items-center justify-between text-blue-800 dark:text-blue-300 text-xs font-semibold">
               <span>{getTranslation('kpi.readyDelivery', language)}</span>
               <Truck className="w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-110" />
             </div>
             <div className="text-lg font-black text-blue-700 dark:text-blue-400 mt-1.5 tabular-nums">
-              {readyForDeliveryCount} Orders
+              <AnimatedCounter value={readyForDeliveryCount} suffix=" Orders" />
             </div>
             <div className="text-[10px] text-blue-600 font-medium mt-1">Dispatch scheduled</div>
-          </motion.div>
+          </InteractiveGlassCard>
 
           {/* 14. Monthly Sales */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
-            className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-emerald-500/10 hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300"
-          >
+          <InteractiveGlassCard variant="dashboard" glowColor="emerald" className="p-4">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.monthlySales', language)}</span>
               <TrendingUp className="w-4 h-4 text-emerald-600 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-stone-900 dark:text-stone-100 mt-1.5 tabular-nums">
-              {formatPKR(monthlySalesAnimated)}
+              <AnimatedCounter value={monthlySales} isCurrency={true} />
             </div>
-            <div className="text-[10px] text-stone-400 mt-1">September 2026 MTD</div>
-          </motion.div>
+            <div className="text-[10px] text-stone-400 mt-1">Month to date</div>
+          </InteractiveGlassCard>
 
           {/* 15. Monthly Net Profit */}
-          <div className="group bg-white dark:bg-[#1E1A15] p-4 rounded-xl border border-stone-200 dark:border-stone-800 shadow-subtle hover:shadow-lg hover:shadow-[#8B5A2B]/10 hover:border-[#8B5A2B]/40 hover:-translate-y-1 transition-all duration-300">
+          <InteractiveGlassCard variant="dashboard" glowColor="emerald" className="p-4">
             <div className="flex items-center justify-between text-stone-500 dark:text-stone-400 text-xs">
               <span>{getTranslation('kpi.monthlyProfit', language)}</span>
               <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 transition-transform duration-300 group-hover:scale-125 group-hover:-translate-y-0.5" />
             </div>
             <div className="text-lg font-black text-emerald-700 dark:text-emerald-400 mt-1.5 tabular-nums">
-              {formatPKR(monthlyProfit)}
+              <AnimatedCounter value={monthlyProfit} isCurrency={true} />
             </div>
             <div className="text-[10px] text-emerald-600 font-medium mt-1">After all COGS & exp</div>
-          </div>
+          </InteractiveGlassCard>
         </motion.div>
       </div>
 

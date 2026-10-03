@@ -4,6 +4,8 @@ import { Customer, CustomerType } from '../../types';
 import { formatPKR, formatDate } from '../../utils/formatters';
 import { CustomerProfileModal } from './CustomerProfileModal';
 import { PaymentModal } from './PaymentModal';
+import { InteractiveGlassCard } from '../common/InteractiveGlassCard';
+import { AnimatedCounter } from '../common/AnimatedCounter';
 import { 
   Users, 
   Search, 
@@ -117,26 +119,26 @@ export const CustomersView: React.FC = () => {
 
       {/* Receivables Summary Strip */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-stone-200 dark:border-stone-800">
-          <div className="text-stone-400 text-xs">Total Registered Clients</div>
+        <InteractiveGlassCard variant="customer" glowColor="blue" className="p-4">
+          <div className="text-stone-400 text-xs font-semibold">Total Registered Clients</div>
           <div className="text-xl font-black text-stone-900 dark:text-stone-100 mt-1 tabular-nums">
-            {customers.length} Accounts
+            <AnimatedCounter value={customers.length} suffix=" Accounts" />
           </div>
-        </div>
+        </InteractiveGlassCard>
 
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/20">
+        <InteractiveGlassCard variant="customer" glowColor="amber" className="p-4 bg-amber-50/20 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/40">
           <div className="text-amber-800 dark:text-amber-300 text-xs font-semibold">Total Outstanding Receivables</div>
           <div className="text-xl font-black text-amber-700 dark:text-amber-400 mt-1 tabular-nums">
-            {formatPKR(totalReceivables)}
+            <AnimatedCounter value={totalReceivables} isCurrency={true} />
           </div>
-        </div>
+        </InteractiveGlassCard>
 
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-stone-200 dark:border-stone-800">
-          <div className="text-stone-400 text-xs">Clients with Overdue Balance</div>
+        <InteractiveGlassCard variant="customer" glowColor="rose" className="p-4">
+          <div className="text-stone-400 text-xs font-semibold">Clients with Overdue Balance</div>
           <div className="text-xl font-black text-rose-600 mt-1 tabular-nums">
-            {customers.filter(c => c.currentBalance > 0).length} Clients
+            <AnimatedCounter value={customers.filter(c => c.currentBalance > 0).length} suffix=" Clients" />
           </div>
-        </div>
+        </InteractiveGlassCard>
       </div>
 
       {/* Toolbar */}

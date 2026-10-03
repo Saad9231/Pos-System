@@ -63,8 +63,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <motion.img 
             layoutId={`product-image-${product.id}`}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            src={product.images[currentImgIdx] || product.images[0] || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80'} 
+            src={product.images[currentImgIdx] || product.images[0] || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80'} 
             alt={product.name}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80';
+            }}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             loading="lazy"
           />
@@ -133,6 +136,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-mono">
             <Ruler className="w-3 h-3 text-stone-400" />
             <span>{product.dimensions.length}″ × {product.dimensions.width}″ × {product.dimensions.height}″</span>
+          </div>
+
+          {/* Stock Meter Progress Bar */}
+          <div className="space-y-1">
+            <div className="flex justify-between text-[10px] font-semibold text-stone-500 dark:text-stone-400">
+              <span>Stock Level</span>
+              <span>{product.currentStock} / {Math.max(product.minStock * 3, 20)} {product.unit}</span>
+            </div>
+            <div className="w-full h-1.5 bg-stone-100 dark:bg-stone-800 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.min(100, (product.currentStock / Math.max(product.minStock * 3, 20)) * 100)}%` }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                className={`h-full rounded-full ${
+                  isOutOfStock ? 'bg-rose-500' : isLowStock ? 'bg-amber-500' : 'bg-emerald-500'
+                }`}
+              />
+            </div>
           </div>
 
           {/* Pricing & Profit */}

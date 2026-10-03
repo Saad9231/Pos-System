@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { formatPKR, formatDate, formatDateTime } from '../../utils/formatters';
+import { InteractiveGlassCard } from '../common/InteractiveGlassCard';
+import { AnimatedCounter } from '../common/AnimatedCounter';
 import { 
   Landmark, 
   CreditCard, 
@@ -156,29 +158,29 @@ export const FinanceView: React.FC = () => {
 
       {/* Financial Position Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/20">
+        <InteractiveGlassCard variant="finance" glowColor="emerald" className="p-4 bg-emerald-50/20 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/50">
           <div className="text-emerald-800 dark:text-emerald-300 text-xs font-semibold">Total Cash & Bank in Hand</div>
           <div className="text-2xl font-black text-emerald-700 dark:text-emerald-400 mt-1 tabular-nums">
-            {formatPKR(totalBankCash)}
+            <AnimatedCounter value={totalBankCash} isCurrency={true} />
           </div>
           <div className="text-[10px] text-stone-400 mt-0.5">{accounts.length} active liquid accounts</div>
-        </div>
+        </InteractiveGlassCard>
 
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-stone-200 dark:border-stone-800">
-          <div className="text-stone-400 text-xs">Customer Receivables (Asset)</div>
+        <InteractiveGlassCard variant="finance" glowColor="amber" className="p-4">
+          <div className="text-stone-400 text-xs font-semibold">Customer Receivables (Asset)</div>
           <div className="text-2xl font-black text-amber-700 dark:text-amber-400 mt-1 tabular-nums">
-            {formatPKR(totalReceivables)}
+            <AnimatedCounter value={totalReceivables} isCurrency={true} />
           </div>
           <div className="text-[10px] text-stone-400 mt-0.5">Pending collection from clients</div>
-        </div>
+        </InteractiveGlassCard>
 
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-stone-200 dark:border-stone-800">
-          <div className="text-stone-400 text-xs">Supplier Payables (Liability)</div>
+        <InteractiveGlassCard variant="finance" glowColor="rose" className="p-4">
+          <div className="text-stone-400 text-xs font-semibold">Supplier Payables (Liability)</div>
           <div className="text-2xl font-black text-rose-700 dark:text-rose-400 mt-1 tabular-nums">
-            {formatPKR(totalPayables)}
+            <AnimatedCounter value={totalPayables} isCurrency={true} />
           </div>
           <div className="text-[10px] text-stone-400 mt-0.5">Owed to timber & foam vendors</div>
-        </div>
+        </InteractiveGlassCard>
       </div>
 
       {/* Tabs */}
@@ -207,9 +209,11 @@ export const FinanceView: React.FC = () => {
       {activeTab === 'accounts' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {accounts.map(acc => (
-            <div
+            <InteractiveGlassCard
               key={acc.id}
-              className="p-5 bg-white dark:bg-[#1E1A15] rounded-2xl border border-stone-200 dark:border-stone-800 shadow-subtle flex flex-col justify-between space-y-4 hover:border-[#8B5A2B]/40 transition-all"
+              variant="finance"
+              glowColor="indigo"
+              className="p-5 flex flex-col justify-between space-y-4"
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -231,10 +235,10 @@ export const FinanceView: React.FC = () => {
               <div className="pt-3 border-t border-stone-100 dark:border-stone-800 flex items-baseline justify-between">
                 <span className="text-xs text-stone-400">Available Balance</span>
                 <span className="text-xl font-black text-stone-900 dark:text-stone-100 tabular-nums">
-                  {formatPKR(acc.balance)}
+                  <AnimatedCounter value={acc.balance} isCurrency={true} />
                 </span>
               </div>
-            </div>
+            </InteractiveGlassCard>
           ))}
         </div>
       ) : (

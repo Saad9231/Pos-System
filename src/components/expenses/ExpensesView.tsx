@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { Expense, ExpenseCategory, PaymentMethod } from '../../types';
 import { formatPKR, formatDate } from '../../utils/formatters';
+import { InteractiveGlassCard } from '../common/InteractiveGlassCard';
+import { AnimatedCounter } from '../common/AnimatedCounter';
 import { 
   DollarSign, 
   Plus, 
@@ -113,29 +115,29 @@ export const ExpensesView: React.FC = () => {
 
       {/* Summary KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-stone-200 dark:border-stone-800">
-          <div className="text-stone-400 text-xs">Total Operating Expenses</div>
+        <InteractiveGlassCard variant="finance" glowColor="rose" className="p-4">
+          <div className="text-stone-400 text-xs font-semibold">Total Operating Expenses</div>
           <div className="text-xl font-black text-rose-700 dark:text-rose-400 mt-1 tabular-nums">
-            {formatPKR(totalApprovedExpenses)}
+            <AnimatedCounter value={totalApprovedExpenses} isCurrency={true} />
           </div>
           <div className="text-[10px] text-stone-400 mt-0.5">Approved month-to-date</div>
-        </div>
+        </InteractiveGlassCard>
 
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/20">
+        <InteractiveGlassCard variant="finance" glowColor="amber" className="p-4 bg-amber-50/20 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/40">
           <div className="text-amber-800 dark:text-amber-300 text-xs font-semibold">Pending Approval Queue</div>
           <div className="text-xl font-black text-amber-700 dark:text-amber-400 mt-1 tabular-nums">
-            {pendingExpensesCount} Vouchers
+            <AnimatedCounter value={pendingExpensesCount} suffix=" Vouchers" />
           </div>
           <div className="text-[10px] text-amber-600 font-medium mt-0.5">Awaiting Owner/Manager approval</div>
-        </div>
+        </InteractiveGlassCard>
 
-        <div className="p-4 bg-white dark:bg-[#1E1A15] rounded-xl border border-stone-200 dark:border-stone-800">
-          <div className="text-stone-400 text-xs">Expense Categories</div>
+        <InteractiveGlassCard variant="finance" glowColor="cyan" className="p-4">
+          <div className="text-stone-400 text-xs font-semibold">Expense Categories</div>
           <div className="text-xl font-black text-stone-900 dark:text-stone-100 mt-1 tabular-nums">
-            {EXPENSE_CATEGORIES.length} Accounts
+            <AnimatedCounter value={EXPENSE_CATEGORIES.length} suffix=" Accounts" />
           </div>
           <div className="text-[10px] text-stone-400 mt-0.5">Classified for P&L</div>
-        </div>
+        </InteractiveGlassCard>
       </div>
 
       {/* Filter Category Chips */}
